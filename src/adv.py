@@ -1,4 +1,5 @@
 from room import Room
+from player import Player
 
 # Declare all the rooms
 
@@ -21,7 +22,8 @@ chamber! Sadly, it has already been completely emptied by
 earlier adventurers. The only exit is to the south."""),
 }
 
-
+for k,v in room.items():
+    v = Room(name=k, description=v)
 # Link rooms together
 
 room['outside'].n_to = room['foyer']
@@ -49,3 +51,11 @@ room['treasure'].s_to = room['narrow']
 # Print an error message if the movement isn't allowed.
 #
 # If the user enters "q", quit the game.
+
+
+def playgame():
+    player_name = input("Enter your name:")
+    player = Player(name=player_name)
+    current_input = ""
+    while current_input is not "q":
+        print(player)
