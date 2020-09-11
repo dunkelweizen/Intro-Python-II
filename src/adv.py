@@ -6,10 +6,10 @@ import sys
 
 room = {
     'outside': Room("Outside Cave Entrance",
-                    "North of you, the cave mount beckons"),
+                    "North of you, the cave mount beckons", ["rocks", "some dusty old bones"]),
 
     'foyer': Room("Foyer", """Dim light filters in from the south. Dusty
-passages run north and east."""),
+passages run north and east.""", ["a key"]),
 
     'overlook': Room("Grand Overlook", """A steep cliff appears before you, falling
 into the darkness. Ahead to the north, a light flickers in
@@ -19,17 +19,16 @@ the distance, but there is no way across the chasm."""),
 to north. The smell of gold permeates the air."""),
 
     'treasure chamber': Room("Treasure Chamber", """You've found the long-lost treasure
-chamber! Sadly, it has already been completely emptied by
-earlier adventurers. The only exit is to the south."""),
+chamber!""", ["a treasure chest", "a golden goblet", "a pile of gems"]),
 }
 
 # Link rooms together
 
 room['outside'].n_to = room['foyer']
 room['foyer'].s_to = room['outside']
-room['foyer'].n_to = room['overlook']
+room['foyer'].n_to = room['grand overlook']
 room['foyer'].e_to = room['narrow passage']
-room['overlook'].s_to = room['foyer']
+room['grand overlook'].s_to = room['foyer']
 room['narrow passage'].w_to = room['foyer']
 room['narrow passage'].n_to = room['treasure chamber']
 room['treasure chamber'].s_to = room['narrow passage']
@@ -56,25 +55,51 @@ room['treasure chamber'].s_to = room['narrow passage']
 def playgame():
     player_name = input("Enter your name:")
     player = Player(name=player_name)
+    valid_moves = ["n", "s", "e", "w"]
+    valid_inventory_choices = ["get", "drop"]
+    room_describe_counter = 0
     while True:
-        current_room = player.current_room
-        print(room[current_room.lower()])
-        current_input = input("Where do you want to go now? To see your character's current status, type 'status'.\n")
+        if room_describe_counter == 0:
+            current_room = player.current_room
+            print(room[current_room.lower()])
+            room_describe_counter += 1
+        current_input = input("What do you want to do now? To see your character's current status, type 'status'. "
+                              "To look around, type 'look'.\n")
         if current_input == "q":
             sys.exit()
+        elif current_input == "look":
+            print(room[current_room.lower()])
         elif current_input == "status":
             print(player)
-            current_input = input("Where do you want to go now?\n")
-        next_move = room[current_room.lower()].make_move(current_input)
-        if next_move is None:
-            print("There's nowhere to go in that direction. Try something else.")
             continue
-        elif next_move is False:
-            print("That's not a valid move. Enter n, s, e, or w, or enter q to quit.")
-            continue
+        elif current_input in valid_moves:
+            next_move = room[current_room.lower()].make_move(current_input)
+            if next_move is None:
+                print("There's nowhere to go in that direction. Try something else.")
+                continue
+            else:
+                room_name = next_move.name
+                player.current_room = room[room_name.lower()].name
+                room_describe_counter = 0
+                continue
+        elif current_input.split()[0] in valid_inventory_choices:
+            if current_input.split()[0] == "get":
+                for item in room[current_room.lower()].items_in_room:
+                    if current_input.split()[1] in item:
+                        player.get_item(item)
+                        room[current_room.lower()].remove_item(item)
+                        continue
+            elif current_input.split()[0] == "drop":
+                for item in player.inventory:
+                    if current_input.split()[1] in item:
+                        player.drop_item(item)
+                        room[current_room.lower()].add_item(item)
+                        continue
         else:
-            room_name = next_move.name
-            player.current_room = room[room_name.lower()].name
+            print("I don't understand what you want to do.")
+
+
+
 
 
 if __name__ == "__main__":

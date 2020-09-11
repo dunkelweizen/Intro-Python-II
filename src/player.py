@@ -19,3 +19,9 @@ class Player:
         current_inventory.append(item)
         self.inventory = current_inventory
         print(f"You have added {item} to your inventory.")
+
+    def drop_item(self, item):
+        current_inventory = self.inventory
+        current_inventory.pop(current_inventory.index(item))
+        self.inventory = current_inventory
+        print(f"You have dropped {item} from your inventory.")
