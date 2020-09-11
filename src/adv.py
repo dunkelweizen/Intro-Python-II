@@ -76,8 +76,15 @@ def playgame():
                               "To look around, type 'look'.\n")
         if current_input == "q":
             sys.exit()
-        elif current_input == "look":
-            print(room[current_room.lower()])
+        elif current_input.split()[0] == "look":
+            if len(current_input) == 1:
+                print(room[current_room.lower()])
+                continue
+            else:
+                for item in current_input.split():
+                    for value in player.inventory:
+                        if item in value.name:
+                            print(value.attributes)
         elif current_input == "status":
             print(player)
             continue
