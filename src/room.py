@@ -4,10 +4,11 @@ import sys
 
 
 class Room:
-    def __init__(self, name, description, items_in_room=[]):
+    def __init__(self, name, description, items_in_room=[], special_items = []):
         self.name = name
         self.description = description
         self.items_in_room = items_in_room
+        self.special_items = special_items
         self.n_to = None
         self.s_to = None
         self.e_to = None
@@ -16,11 +17,11 @@ class Room:
     def __str__(self):
         s = f"You are at {self.name}, {self.description}"
         if len(self.items_in_room) == 1:
-            s += f"\n There is {self.items_in_room[0]} here."
+            s += f"\n There is {self.items_in_room[0].name} here."
         elif len(self.items_in_room) > 1:
             ns = "\nThere are "
             for item in self.items_in_room:
-                ns += item + " and "
+                ns += item.name + " and "
             ns = ns.rstrip(" and ")
             s += ns + " here."
         return s

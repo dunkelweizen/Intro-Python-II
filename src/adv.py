@@ -9,7 +9,7 @@ key = Item("a key", "An old brass key. You wonder what it might be for.")
 gems = Treasure("a pile of gems", "It's a big pile of shiny precious gemstones. Probably quite valuable.")
 goblet = Treasure("a golden goblet", "A large golden goblet with rubies inlaid around the rim.")
 chest = Chest("a treasure chest", "A large wooden chest with brass bands. Full of something enticing.")
-
+coins = Treasure("a pile of gold coins", "A big pile of gold coins. You could buy a lot with this.")
 
 # Declare all the rooms
 
