@@ -1,17 +1,26 @@
 from room import Room
 from player import Player
+from items import Item, Treasure, Chest
 import sys
+
+rocks = Item("a pile of rocks", "It's just a pile of rocks.")
+bones = Item("some dusty old bones", "You think they might be human bones. They've clearly been here a long time.")
+key = Item("a key", "An old brass key. You wonder what it might be for.")
+gems = Treasure("a pile of gems", "It's a big pile of shiny precious gemstones. Probably quite valuable.")
+goblet = Treasure("a golden goblet", "A large golden goblet with rubies inlaid around the rim.")
+chest = Chest("a treasure chest", "A large wooden chest with brass bands. Full of something enticing.")
+
 
 # Declare all the rooms
 
 room = {
     'outside': Room("Outside Cave Entrance",
-                    "North of you, the cave mount beckons", ["rocks", "some dusty old bones"]),
+                    "North of you, the cave mount beckons", [rocks, bones]),
 
     'foyer': Room("Foyer", """Dim light filters in from the south. Dusty
-passages run north and east.""", ["a key"]),
+passages run north and east.""", [key]),
 
-    'overlook': Room("Grand Overlook", """A steep cliff appears before you, falling
+    'grand overlook': Room("Grand Overlook", """A steep cliff appears before you, falling
 into the darkness. Ahead to the north, a light flickers in
 the distance, but there is no way across the chasm."""),
 
@@ -19,7 +28,7 @@ the distance, but there is no way across the chasm."""),
 to north. The smell of gold permeates the air."""),
 
     'treasure chamber': Room("Treasure Chamber", """You've found the long-lost treasure
-chamber!""", ["a treasure chest", "a golden goblet", "a pile of gems"]),
+chamber!""", [chest, gems, goblet])
 }
 
 # Link rooms together
@@ -85,13 +94,13 @@ def playgame():
         elif current_input.split()[0] in valid_inventory_choices:
             if current_input.split()[0] == "get":
                 for item in room[current_room.lower()].items_in_room:
-                    if current_input.split()[1] in item:
+                    if current_input.split()[1] in item.name.split():
                         player.get_item(item)
                         room[current_room.lower()].remove_item(item)
                         continue
             elif current_input.split()[0] == "drop":
                 for item in player.inventory:
-                    if current_input.split()[1] in item:
+                    if current_input.split()[1] in item.name.split():
                         player.drop_item(item)
                         room[current_room.lower()].add_item(item)
                         continue
