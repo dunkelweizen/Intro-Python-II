@@ -1,6 +1,6 @@
 # Write a class to hold player information, e.g. what room they are in
 # currently.
-from items import Chest
+from items import Item, Chest
 
 
 class Player:
@@ -31,7 +31,7 @@ class Player:
                 print("It's locked.")
             else:
                 item.open()
-                self.inventory.get_item("coins")
+                self.get_item("coins")
 
 
     def drop_item(self, item):

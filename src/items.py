@@ -17,5 +17,5 @@ class Chest(Item):
         super().__init__(name, attributes)
 
     def open(self):
-        s = "You open the chest to find a big pile of gold coins inside."
+        print("You open the chest to find a big pile of gold coins inside.")
 
