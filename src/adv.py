@@ -1,5 +1,6 @@
 from room import Room
 from player import Player
+import sys
 
 # Declare all the rooms
 
@@ -17,7 +18,7 @@ the distance, but there is no way across the chasm."""),
     'narrow passage': Room("Narrow Passage", """The narrow passage bends here from west
 to north. The smell of gold permeates the air."""),
 
-    'treasure': Room("Treasure Chamber", """You've found the long-lost treasure
+    'treasure chamber': Room("Treasure Chamber", """You've found the long-lost treasure
 chamber! Sadly, it has already been completely emptied by
 earlier adventurers. The only exit is to the south."""),
 }
@@ -30,8 +31,8 @@ room['foyer'].n_to = room['overlook']
 room['foyer'].e_to = room['narrow passage']
 room['overlook'].s_to = room['foyer']
 room['narrow passage'].w_to = room['foyer']
-room['narrow passage'].n_to = room['treasure']
-room['treasure'].s_to = room['narrow passage']
+room['narrow passage'].n_to = room['treasure chamber']
+room['treasure chamber'].s_to = room['narrow passage']
 
 
 #
@@ -55,13 +56,15 @@ room['treasure'].s_to = room['narrow passage']
 def playgame():
     player_name = input("Enter your name:")
     player = Player(name=player_name)
-    current_input = ""
-    while current_input is not "q":
+    while True:
         current_room = player.current_room
         print(room[current_room.lower()])
-        current_input = input("Where do you want to go now?")
+        current_input = input("Where do you want to go now? To see your character's current status, type 'status'.\n")
         if current_input == "q":
-            break
+            sys.exit()
+        elif current_input == "status":
+            print(player)
+            current_input = input("Where do you want to go now?\n")
         next_move = room[current_room.lower()].make_move(current_input)
         if next_move is None:
             print("There's nowhere to go in that direction. Try something else.")
